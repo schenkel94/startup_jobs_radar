@@ -27,7 +27,10 @@ if st.button("🔎 Atualizar vagas"):
 
         vagas = filtrar_vagas(vagas)
 
-        df = salvar_dataset(vagas)
+if vagas:
+    df = salvar_dataset(vagas)
+else:
+    df = carregar_dataset()
 
     st.success("ETL concluído!")
 
