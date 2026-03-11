@@ -2,60 +2,79 @@ import streamlit as st
 import pandas as pd
 
 from crawler_universal import crawl_empresas
-from filters import filtrar_vagas
-from storage import salvar_dataset, carregar_dataset
 
 
-st.set_page_config(page_title="Radar de Vagas de Startups", layout="wide")
+st.set_page_config(page_title="Radar de Vagas Startups", layout="wide")
 
 st.title("🚀 Radar de Vagas de Startups")
 
-st.caption("Crawler de vagas ocultas de startups")
+st.caption("Crawler de vagas ocultas antes de aparecer no LinkedIn")
+
 
 # carregar empresas
 with open("empresas.txt") as f:
     empresas = [e.strip() for e in f.readlines()]
 
 
-# botão ETL
-if st.button("🔎 Atualizar vagas"):
+# filtros
+st.sidebar.header("Filtros")
 
-    with st.spinner("Coletando vagas..."):
+cargo_filtro = st.sidebar.text_input(
+    "Filtrar cargo (ex: data, analyst, engineer)"
+)
+
+empresa_filtro = st.sidebar.multiselect(
+    "Filtrar empresas",
+    empresas
+)
+
+
+# botão crawler
+if st.button("🔎 Buscar vagas"):
+
+    with st.spinner("Escaneando startups..."):
 
         vagas = crawl_empresas(empresas)
 
-        vagas = filtrar_vagas(vagas)
+        df = pd.DataFrame(vagas)
 
-        if vagas:
-            df = salvar_dataset(vagas)
-        else:
-            df = carregar_dataset()
-
-    st.success("ETL concluído!")
-
-else:
-
-    df = carregar_dataset()
+        if df.empty:
+            st.warning("Nenhuma vaga encontrada")
+            st.stop()
 
 
-if not df.empty:
+        # filtro empresa
+        if empresa_filtro:
 
-    df = df.drop_duplicates(subset=["link"])
+            df = df[df["empresa"].isin(empresa_filtro)]
 
-    col1, col2 = st.columns(2)
 
-    col1.metric("Total vagas", len(df))
+        # filtro cargo
+        if cargo_filtro:
 
-    col2.metric("Vagas novas", df["nova_vaga"].sum())
+            df = df[
+                df["vaga"].str.lower().str.contains(
+                    cargo_filtro.lower(),
+                    na=False
+                )
+            ]
 
-    st.dataframe(df, use_container_width=True)
 
-    st.download_button(
-        "Baixar dataset",
-        df.to_csv(index=False, sep=";"),
-        "vagas_startups.csv"
-    )
+        st.success(f"{len(df)} vagas encontradas")
 
-else:
 
-    st.info("Nenhuma vaga encontrada ainda.")
+        df = df.drop_duplicates(subset=["link"])
+
+
+        st.dataframe(df, use_container_width=True)
+
+
+        # export excel
+        excel = df.to_excel("vagas.xlsx", index=False)
+
+
+        st.download_button(
+            "📥 Baixar Excel",
+            df.to_csv(index=False),
+            "vagas_startups.csv"
+        )
