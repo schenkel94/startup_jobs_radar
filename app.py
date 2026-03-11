@@ -10,15 +10,14 @@ st.set_page_config(page_title="Radar de Vagas de Startups", layout="wide")
 
 st.title("🚀 Radar de Vagas de Startups")
 
-st.write("Encontre vagas escondidas antes de aparecerem no LinkedIn")
-
+st.caption("Crawler de vagas ocultas de startups")
 
 # carregar empresas
 with open("empresas.txt") as f:
     empresas = [e.strip() for e in f.readlines()]
 
 
-# botão de coleta
+# botão ETL
 if st.button("🔎 Atualizar vagas"):
 
     with st.spinner("Coletando vagas..."):
@@ -27,10 +26,10 @@ if st.button("🔎 Atualizar vagas"):
 
         vagas = filtrar_vagas(vagas)
 
-if vagas:
-    df = salvar_dataset(vagas)
-else:
-    df = carregar_dataset()
+        if vagas:
+            df = salvar_dataset(vagas)
+        else:
+            df = carregar_dataset()
 
     st.success("ETL concluído!")
 
@@ -41,15 +40,15 @@ else:
 
 if not df.empty:
 
+    df = df.drop_duplicates(subset=["link"])
+
     col1, col2 = st.columns(2)
 
     col1.metric("Total vagas", len(df))
 
     col2.metric("Vagas novas", df["nova_vaga"].sum())
 
-
     st.dataframe(df, use_container_width=True)
-
 
     st.download_button(
         "Baixar dataset",
