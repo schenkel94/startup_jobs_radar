@@ -4,6 +4,7 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0"
 }
 
+
 def crawl_inhire(empresa):
 
     vagas = []
@@ -29,7 +30,7 @@ def crawl_inhire(empresa):
                 vagas.append({
                     "empresa": empresa,
                     "vaga": job.get("title",""),
-                    "local": job.get("location","remote"),
+                    "local": job.get("location",""),
                     "link": f"https://{empresa}.inhire.app/vagas/{job.get('slug','')}"
                 })
 
@@ -44,14 +45,14 @@ def crawl_inhire(empresa):
 
 def crawl_empresas(empresas):
 
-    vagas = []
+    todas = []
 
     for empresa in empresas:
 
         print("Escaneando:", empresa)
 
-        v = crawl_inhire(empresa)
+        vagas = crawl_inhire(empresa)
 
-        vagas.extend(v)
+        todas.extend(vagas)
 
-    return vagas
+    return todas
