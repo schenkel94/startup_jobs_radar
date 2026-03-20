@@ -10,24 +10,28 @@ st.set_page_config(page_title="Schenkel JobSearch Greenhouse", page_icon="🕵�
 # Lista de empresas (board tokens do Greenhouse)
 # Para adicionar mais, basta descobrir o nome na URL do greenhouse: greenhouse.io/nome-da-empresa
 DEFAULT_COMPANIES = [
-    # Fintechs e Bancos Digitais (13)
+    # Fintechs e Bancos Digitais 
     "nubank",
     "xpinc",
     "picpay",
     "c6bank",
     "inter",
-    # "creditasen", # 404
-    # "creditas",   # 404 - Provavelmente mudou de ATS
     "btgpactual",
     "pagarme",
     "agibank",
     "bancopan",
     "ebanx",
     "clara",
-    "pismo", # Tentar manter, as vezes oscila, mas se der 404 o código novo trata
+    "pismo",
+    "neon",
+    "creditas",
+    "dock",
+    "mercadopago",
+    "hashdex",
+    "stone",
     
-    # Tecnologia e Software (22)
-    "ifoodcarreiras", # Corrigido
+    # Tecnologia e Software (42) -
+    "ifoodcarreiras",
     "stone",
     "rdstation",
     "vtex",
@@ -42,40 +46,49 @@ DEFAULT_COMPANIES = [
     "isaac",
     "marketdata",
     "aircompany",
-    
-    # Proptech (2)
     "quintoandar",
+    "loft",
+    "pipefy",
+    "contaazul",
+    "voltz",
+    "ciandt",
+    "tivit",
+    "softplan",
+    "movile",
+    "clearsale",
+    "fretebras",
+    "solides",
+    "cobli",
+    "meliuz",
     
-    # Educação (2)
+    # Educação (4) - 
     "arcoeducacao",
+    "afya",
     
-    # Logística e Delivery (4)
-    # "deliverymuch", # 404
-    # "freterapido",  # 404
-    # "open",         # 404
-    # "openco",       # 404
-    
-    # Eventos (1)
-    # "sympla",       # 404 - Mudou para Gupy?
-    
-    # Indústria (1)
+    # Indústria (2) -
     "braskem",
     
     # Agências (3)
     "oliverbrazil",
     
-    # Serviços Internacionais (5)
-    # "telusdigitalbrazil", # 404
-    "hotmartcareersbr",  # Usar: job-boards.eu.greenhouse.io
+    # Serviços Internacionais (10) 
+    "hotmartcareersbr",
+    "rippling",
+    "remote",
+    "deel",
+    "belvo",
+    "yulife",
+    "unico",
+    "stake",
+    "kickoff",
     
-    # Outros (11)
+    # Outros (12) 
     "flash",
     "getatende",
     "enforce",
     "gympass",
     "99",
-    # "meliuz",       # 404 - Gupy
-    # "contabilizei", # 404 - Gupy
+    "magazineluiza"
 ]
 
 # --- CARREGAR EMPRESAS EXTRAS DO MINERADOR ---
